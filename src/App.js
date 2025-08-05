@@ -46,7 +46,10 @@ function App() {
       <h1>Jammming</h1>
       <SearchBar />
       <div className="App-content">
-        <SearchResults tracks={mockTracks}/>
+        <SearchResults 
+        tracks={mockTracks}
+        onAdd={addTrack}
+        />
         <Playlist 
         playlistName={playlistName}
         playlistTracks={playlistTracks}
