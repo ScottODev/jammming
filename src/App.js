@@ -32,6 +32,8 @@ function App() {
   const [playlistName, setPlaylistName] = useState('New Playlist');
   const [playlistTracks, setPlaylistTracks] = useState([]);
 
+
+// Adding song to playlist feature 
   const addTrack = (track) => {
     // Checking for duplicates BEFORE adding a track
     const isTrackInPlaylist = playlistTracks.some(playlistTrack => playlistTrack.id === track.id);
@@ -40,6 +42,12 @@ function App() {
       setPlaylistTracks([...playlistTracks, track]);
     }
   };
+
+// Removing song from playlist feature
+  const removeTrack = (track) => {
+    console.log("removeTrack called with:", track); // Debugging line
+    setPlaylistTracks(playlistTracks.filter(playlistTrack => playlistTrack.id !== track.id));
+  }
 
   return (
     <div className="App">
@@ -53,6 +61,7 @@ function App() {
         <Playlist 
         playlistName={playlistName}
         playlistTracks={playlistTracks}
+        onRemove={removeTrack}
         />
       </div>
     </div>
