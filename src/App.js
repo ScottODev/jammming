@@ -49,6 +49,12 @@ function App() {
     setPlaylistTracks(playlistTracks.filter(playlistTrack => playlistTrack.id !== track.id));
   }
 
+// Update playlist name feature
+  const updatePlaylistName = (name) => {
+    console.log("updatePlaylistName called with:", name); // Debugging line
+    setPlaylistName(name);
+  }
+
   return (
     <div className="App">
       <h1>Jammming</h1>
@@ -59,6 +65,7 @@ function App() {
         onAdd={addTrack}
         />
         <Playlist 
+        onNameChange={updatePlaylistName}
         playlistName={playlistName}
         playlistTracks={playlistTracks}
         onRemove={removeTrack}
