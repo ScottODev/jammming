@@ -6,10 +6,6 @@ let accessToken; // Variable stores the token once retrieved
 const Spotify = {
     getAccessToken() {
 
-    console.log("=== DEBUGGING REDIRECT URI ===");
-    console.log("redirectUri variable:", redirectUri);
-    console.log("clientId variable:", clientId);
-
         if (accessToken) {
             return accessToken; // If token already exists, return it
         }
@@ -34,6 +30,31 @@ const Spotify = {
         console.log("Full authorization URL:", accessUrl);
         window.location = accessUrl;
       }
+    },
+
+        search(term) {
+        const accessToken = Spotify.getAccessToken();
+
+        return fetch(`https://api.spotify.com/v1/search?type=track&q=${term}`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then(jsonResponse => {
+            if (!jsonResponse.tracks) {
+                return [];
+            }
+            return jsonResponse.tracks.items.map(track => ({
+                id: track.id,
+                name: track.name,
+                artist: track.artists[0].name,
+                album: track.album.name,
+                uri: track.uri
+            }));
+        });
     }
 };
 
