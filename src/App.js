@@ -56,20 +56,26 @@ function App() {
   const search = (term) => {
     console.log("Search called with term:", term);
 
+    const accessToken = Spotify.getAccessToken();
+    console.log("Access token:", accessToken);
+
+    if (!accessToken) {
+      console.log("No access token, redirecting to login...");
+      return; // Exit early if no token
+    }
+
     Spotify.search(term).then(searchResults => {
       console.log("Spotify returned:", searchResults);
       console.log("Number of results:", searchResults.length);
-
       setSearchResults(searchResults);
     }).catch(error => {
-      console.error("Search error:", error);
+        console.error("Search error:", error);
     });
   };
-
+  
   return (
     <div className="App">
       <h1>Jammming</h1>
-      <button onClick={() => console.log("Token:", Spotify.getAccessToken())}>Check Token</button>
       <SearchBar onSearch={search}/>
       <div className="App-content">
         <SearchResults 
