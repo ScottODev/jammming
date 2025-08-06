@@ -53,25 +53,19 @@ function App() {
    console.log("Playlist reset complete.");
   };
 
+  // Search function to fetch tracks from Spotify
+
   const search = (term) => {
-    console.log("Search called with term:", term);
+  console.log("Search called with term:", term);
 
-    const accessToken = Spotify.getAccessToken();
-    console.log("Access token:", accessToken);
-
-    if (!accessToken) {
-      console.log("No access token, redirecting to login...");
-      return; // Exit early if no token
-    }
-
-    Spotify.search(term).then(searchResults => {
-      console.log("Spotify returned:", searchResults);
-      console.log("Number of results:", searchResults.length);
-      setSearchResults(searchResults);
-    }).catch(error => {
-        console.error("Search error:", error);
-    });
-  };
+  Spotify.search(term).then(searchResults => {
+    console.log("Spotify returned:", searchResults);
+    console.log("Number of results:", searchResults.length);
+    setSearchResults(searchResults);
+  }).catch(error => {
+    console.error("Search error:", error);
+  });
+};
   
   return (
     <div className="App">
