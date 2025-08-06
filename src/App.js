@@ -54,8 +54,15 @@ function App() {
   };
 
   const search = (term) => {
+    console.log("Search called with term:", term);
+
     Spotify.search(term).then(searchResults => {
+      console.log("Spotify returned:", searchResults);
+      console.log("Number of results:", searchResults.length);
+
       setSearchResults(searchResults);
+    }).catch(error => {
+      console.error("Search error:", error);
     });
   };
 
