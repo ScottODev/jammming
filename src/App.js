@@ -6,30 +6,6 @@ import SearchResults from './components/SearchResults';
 import Playlist from './components/Playlist';
 import Spotify from './util/Spotify'; // Importing Spotify module for API calls
 
-const mockTracks = [ // Temporary manual tracks array.
-  {
-    id: 1,
-    name: 'Blinding Lights',
-    artist: 'The Weekend',
-    album: 'After Hours',
-    uri: 'spotify:track:0VjIjW4GlULA6NkVLG6uiX'
-  },
-  {
-    id: 2,
-    name: 'Levitating',
-    artist: 'Dua Lipa',
-    album: 'Future Nostalgia',
-    uri: 'spotify:track:463CkQjx2Zk1yXoBuierM9'
-  },
-  {
-    id: 3,
-    name: 'Watermelon Sugar',
-    artist: 'Harry Styles',
-    album: 'Fine Line',
-    uri: 'spotify:track:6UelLqGlWMcVH1E5c4H7lY'
-  }
-];
-
 function App() {
 
   // State for playlist name and tracks
@@ -77,7 +53,7 @@ function App() {
    console.log("Playlist reset complete.");
   };
 
-  const Search = (term) => {
+  const search = (term) => {
     Spotify.search(term).then(searchResults => {
       setSearchResults(searchResults);
     });
@@ -86,7 +62,6 @@ function App() {
   return (
     <div className="App">
       <h1>Jammming</h1>
-      <button onClick={() => Spotify.getAccessToken()}>Test Spotify Login</button>
       <SearchBar onSearch={search}/>
       <div className="App-content">
         <SearchResults 
