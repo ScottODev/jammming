@@ -10,19 +10,22 @@ const mockTracks = [ // Temporary manual tracks array.
     id: 1,
     name: 'Blinding Lights',
     artist: 'The Weekend',
-    album: 'After Hours'
+    album: 'After Hours',
+    uri: 'spotify:track:0VjIjW4GlULA6NkVLG6uiX'
   },
   {
     id: 2,
     name: 'Levitating',
     artist: 'Dua Lipa',
     album: 'Future Nostalgia',
+    uri: 'spotify:track:463CkQjx2Zk1yXoBuierM9'
   },
   {
     id: 3,
     name: 'Watermelon Sugar',
     artist: 'Harry Styles',
     album: 'Fine Line',
+    uri: 'spotify:track:6UelLqGlWMcVH1E5c4H7lY'
   }
 ];
 
@@ -64,6 +67,7 @@ function App() {
         tracks={mockTracks}
         onAdd={addTrack}
         />
+        <h1>Your Playlist:</h1>
         <Playlist 
         onNameChange={updatePlaylistName}
         playlistName={playlistName}
