@@ -55,16 +55,19 @@ function App() {
 
   // Search function to fetch tracks from Spotify
 
-  const search = (term) => {
-  console.log("Search called with term:", term);
-
-  Spotify.search(term).then(searchResults => {
-    console.log("Spotify returned:", searchResults);
-    console.log("Number of results:", searchResults.length);
-    setSearchResults(searchResults);
-  }).catch(error => {
-    console.error("Search error:", error);
-  });
+const search = (term) => {
+  console.log("=== SEARCH DEBUG START ===");
+  console.log("Search term:", term);
+  
+  Spotify.search(term)
+    .then(searchResults => {
+      console.log("SUCCESS:", searchResults);
+      console.log("Number of results:", searchResults.length);
+      setSearchResults(searchResults);
+    })
+    .catch(error => {
+      console.error("Search failed:", error);
+    });
 };
   
   return (
