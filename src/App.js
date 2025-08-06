@@ -35,6 +35,7 @@ function App() {
   // State for playlist name and tracks
   const [playlistName, setPlaylistName] = useState('New Playlist');
   const [playlistTracks, setPlaylistTracks] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
 
 
 // Adding song to playlist feature 
@@ -76,14 +77,20 @@ function App() {
    console.log("Playlist reset complete.");
   };
 
+  const Search = (term) => {
+    Spotify.search(term).then(searchResults => {
+      setSearchResults(searchResults);
+    });
+  };
+
   return (
     <div className="App">
       <h1>Jammming</h1>
       <button onClick={() => Spotify.getAccessToken()}>Test Spotify Login</button>
-      <SearchBar />
+      <SearchBar onSearch={search}/>
       <div className="App-content">
         <SearchResults 
-        tracks={mockTracks}
+        tracks={searchResults}
         onAdd={addTrack}
         />
         <h1>Your Playlist:</h1>
