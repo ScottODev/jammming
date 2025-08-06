@@ -1,5 +1,5 @@
 const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID; // Stored securely
-const redirectUri = encodeURIComponent('https://scottodev.github.io/jammming/'); // This is where Spotify will send the user back after authorization - Note if this changes, change on Spotify dev dashboard too
+const redirectUri = 'https://scottodev.github.io/jammming/'; // This is where Spotify will send the user back after authorization - Note if this changes, change on Spotify dev dashboard too
 
 let accessToken; // Variable stores the token once retrieved
 
