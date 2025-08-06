@@ -58,6 +58,23 @@ function App() {
     setPlaylistName(name);
   }
 
+  const savePlaylist = () => {
+    console.log("Saving playlist:", playlistName);
+
+   // Extract URIs from playlist tracks
+   const trackUris = playlistTracks.map(track => track.uri);
+    console.log("Track URIs to save:", trackUris);
+
+   // I will call the Spotify API here.
+   console.log(`Saving playlist "${playlistName}" with ${trackUris.length} tracks`);
+
+   // Reset playlist after saving
+   setPlaylistName('New Playlist');
+   setPlaylistTracks([]);
+
+   console.log("Playlist reset complete.");
+  };
+  
   return (
     <div className="App">
       <h1>Jammming</h1>
