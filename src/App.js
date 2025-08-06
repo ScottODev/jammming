@@ -4,6 +4,7 @@ import './App.css';
 import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
 import Playlist from './components/Playlist';
+import Spotify from './util/Spotify'; // Importing Spotify module for API calls
 
 const mockTracks = [ // Temporary manual tracks array.
   {
@@ -78,6 +79,7 @@ function App() {
   return (
     <div className="App">
       <h1>Jammming</h1>
+      <button onClick={() => Spotify.getAccessToken()}>Test Spotify Login</button>
       <SearchBar />
       <div className="App-content">
         <SearchResults 
