@@ -74,7 +74,7 @@ function App() {
 
    console.log("Playlist reset complete.");
   };
-  
+
   return (
     <div className="App">
       <h1>Jammming</h1>
@@ -90,6 +90,7 @@ function App() {
         playlistName={playlistName}
         playlistTracks={playlistTracks}
         onRemove={removeTrack}
+        onSave={savePlaylist}
         />
       </div>
     </div>
