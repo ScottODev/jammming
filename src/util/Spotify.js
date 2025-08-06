@@ -1,13 +1,14 @@
 const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID; // Stored securely
-const redirectUri = 'https://scottodev.github.io/jammming/'; // This is where Spotify will send the user back after authorization - Note if this changes, change on Spotify dev dashboard too
+const redirectUri = encodeURIComponent('https://scottodev.github.io/jammming/'); // This is where Spotify will send the user back after authorization - Note if this changes, change on Spotify dev dashboard too
 
 let accessToken; // Variable stores the token once retrieved
 
 const Spotify = {
     getAccessToken() {
 
-        console.log("Client ID being used:", clientId);
-        console.log("Redirect URI being used:", redirectUri);
+    console.log("=== DEBUGGING REDIRECT URI ===");
+    console.log("redirectUri variable:", redirectUri);
+    console.log("clientId variable:", clientId);
 
         if (accessToken) {
             return accessToken; // If token already exists, return it
@@ -30,6 +31,7 @@ const Spotify = {
     } else {
         // Redirect to Spotify authorization page
         const accessUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=user-read-private&redirect_uri=${redirectUri}`;
+        console.log("Full authorization URL:", accessUrl);
         window.location = accessUrl;
       }
     }
