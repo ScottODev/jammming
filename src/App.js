@@ -69,6 +69,7 @@ function App() {
   return (
     <div className="App">
       <h1>Jammming</h1>
+      <button onClick={() => console.log("Token:", Spotify.getAccessToken())}>Check Token</button>
       <SearchBar onSearch={search}/>
       <div className="App-content">
         <SearchResults 
