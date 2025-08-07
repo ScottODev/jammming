@@ -29,33 +29,41 @@ const Spotify = {
   },
 
   search(term) {
-    const token = Spotify.getAccessToken();
-    
-    if (!token) {
-      return Promise.resolve([]); // Return empty if redirecting
-    }
-
-    return fetch(`https://api.spotify.com/v1/search?type=track&q=${encodeURIComponent(term)}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (!data.tracks) return [];
-      return data.tracks.items.map(track => ({
-        id: track.id,
-        name: track.name,
-        artist: track.artists[0].name,
-        album: track.album.name,
-        uri: track.uri
-      }));
-    })
-    .catch(error => {
-      console.error('Search error:', error);
-      return [];
-    });
+  const token = Spotify.getAccessToken();
+  
+  if (!token) {
+    return Promise.resolve([]);
   }
+
+  const url = `https://api.spotify.com/v1/search?type=track&q=${encodeURIComponent(term)}`;
+  console.log("Search URL:", url);
+  console.log("Using token:", token);
+
+  return fetch(url, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+  .then(response => {
+    console.log("Response status:", response.status);
+    return response.json();
+  })
+  .then(data => {
+    console.log("Full Spotify response:", data);
+    if (!data.tracks) return [];
+    return data.tracks.items.map(track => ({
+      id: track.id,
+      name: track.name,
+      artist: track.artists[0].name,
+      album: track.album.name,
+      uri: track.uri
+    }));
+  })
+  .catch(error => {
+    console.error('Search error:', error);
+    return [];
+  });
+}
 };
 
 export default Spotify;
