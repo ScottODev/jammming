@@ -71,6 +71,14 @@
   box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
 }
 
+.welcome-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 100px); 
+  padding: 40px 20px;
+}
+
 /* Welcome Section */
 .welcome-section {
   padding: 40px;
