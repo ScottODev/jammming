@@ -1,5 +1,5 @@
 const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
-const redirectUri = 'https://scottodev.github.io/jammming/';
+const redirectUri = 'https://scottodevjammming.netlify.app/';
 
 let accessToken;
 
