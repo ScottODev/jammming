@@ -4,33 +4,29 @@ const redirectUri = 'https://scottodev.github.io/jammming/'; // This is where Sp
 let accessToken; // Variable stores the token once retrieved
 
 const Spotify = {
-    getAccessToken() {
+getAccessToken() {
+    if (accessToken) {
+        return accessToken;
+    }
 
-        if (accessToken) {
-            return accessToken; // If token already exists, return it
-        }
+    // Check if access token is in URL
+    const currentUrl = window.location.href || '';
+    const accessTokenMatch = currentUrl.match(/access_token=([^&]*)/);
+    const expiresInMatch = currentUrl.match(/expires_in=([^&]*)/);
 
-        // Check if access token is in URL (returning from Spotify)
-        const currentUrl = window.location.href || '';
-        const accessTokenMatch = currentUrl.match(/access_token=([^&]*)/);
-        const expiresInMatch = currentUrl.match(/expires_in=([^&]*)/);
-
-        if (accessTokenMatch && expiresInMatch) {
-            accessToken = accessTokenMatch[1]; // Storing the access token
-            const expiresIn = Number(expiresInMatch[1]); // Get the expiration time
-
-            // Clear parameters from URl and set token to expire
-            window.setTimeout(() => accessToken = '', expiresIn * 1000);
-            window.history.pushState('Access Token', null, '/')
-
-            return accessToken;
-        } else {
-            // Redirect to Spotify authorization page
-            const accessUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=user-read-private&redirect_uri=${redirectUri}`;
-            console.log("Full authorization URL:", accessUrl);
-            window.location = accessUrl;
-        }
-    },
+    if (accessTokenMatch && expiresInMatch) {
+        accessToken = accessTokenMatch[1];
+        const expiresIn = Number(expiresInMatch[1]);
+        window.setTimeout(() => accessToken = '', expiresIn * 1000);
+        window.history.pushState('Access Token', null, '/');
+        return accessToken;
+    } else {
+        // Try with show_dialog to force permissions screen
+        const accessUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public%20playlist-modify-private%20user-read-private&redirect_uri=${redirectUri}&show_dialog=true`;
+        console.log("Authorization URL:", accessUrl);
+        window.location = accessUrl;
+    }
+},
 
     search(term) {
         const accessToken = Spotify.getAccessToken();
