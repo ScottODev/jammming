@@ -26,7 +26,7 @@ const Spotify = {
             return accessToken;
         } else {
             // Redirect to Spotify authorization page
-            const accessUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=user-read-private&redirect_uri=${redirectUri}`;
+            const accessUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=user-read-private%20playlist-modify-public&redirect_uri=${redirectUri}`;
             console.log("Full authorization URL:", accessUrl);
             window.location = accessUrl;
         }
