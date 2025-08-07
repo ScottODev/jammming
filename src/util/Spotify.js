@@ -32,6 +32,10 @@ const Spotify = {
     const code = urlParams.get('code');
 
     if (code && codeVerifier) {
+      console.log("=== TOKEN EXCHANGE DEBUG ===");
+      console.log("Authorization code:", code);
+      console.log("Code verifier exists:", !!codeVerifier);
+      
       // Exchange code for token
       const response = await fetch('https://accounts.spotify.com/api/token', {
         method: 'POST',
@@ -47,15 +51,20 @@ const Spotify = {
         }),
       });
 
+      console.log("Token response status:", response.status);
       const data = await response.json();
+      console.log("Token response data:", data);
       
       if (data.access_token) {
         accessToken = data.access_token;
+        console.log("✅ Token saved successfully!");
         // Clean URL
         window.history.replaceState({}, document.title, window.location.pathname);
         // Set expiration
         setTimeout(() => { accessToken = null; }, data.expires_in * 1000);
         return accessToken;
+      } else {
+        console.error("❌ No access token in response:", data);
       }
     }
 

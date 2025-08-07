@@ -73,7 +73,11 @@ const search = (term) => {
   return (
     <div className="App">
       <h1>Jammming</h1>
+    {!isConnected ? (
+      <button onClick={connectToSpotify}>Connect to Spotify</button>
+    ) : (
       <SearchBar onSearch={search}/>
+    )}
       <div className="App-content">
         <SearchResults 
         tracks={searchResults}
