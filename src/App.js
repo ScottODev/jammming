@@ -133,14 +133,16 @@ function App() {
         <div className="App-content">
           {/* Left sidebar with user info and search */}
           <div className="welcome-section sidebar">
-            <h2 className="welcome-title">Hey</h2>
-            <h2 className="welcome-name">
-              {userInfo?.name || 'music lover'}
-            </h2>
-            <p className="welcome-description">
-              Browse Spotify by title, artist or both. Then join your favorites 
-              into a newly created list that you can add to your account.
-            </p>
+            <div className="sidebar-content">
+              <h2 className="welcome-title">Hey</h2>
+              <h2 className="welcome-name">
+                {userInfo?.name || 'music lover'}
+              </h2>
+              <p className="welcome-description">
+                Browse Spotify by title, artist or both. Then join your favorites 
+                into a newly created list that you can add to your account.
+              </p>
+            </div>
             
             <div className="search-section">
               <SearchBar onSearch={search}/>
