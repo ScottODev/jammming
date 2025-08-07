@@ -1,66 +1,61 @@
-const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID; // Stored securely
-const redirectUri = 'https://scottodev.github.io/jammming/'; // This is where Spotify will send the user back after authorization - Note if this changes, change on Spotify dev dashboard too
+const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
+const redirectUri = 'https://scottodev.github.io/jammming/';
 
-let accessToken; // Variable stores the token once retrieved
+let accessToken;
 
 const Spotify = {
-getAccessToken() {
+  getAccessToken() {
     if (accessToken) {
-        return accessToken;
+      return accessToken;
     }
 
-    // Check if access token is in URL
-    const currentUrl = window.location.href || '';
-    const accessTokenMatch = currentUrl.match(/access_token=([^&]*)/);
-    const expiresInMatch = currentUrl.match(/expires_in=([^&]*)/);
+    // Check for access token in the URL
+    const urlParams = new URLSearchParams(window.location.hash.substr(1));
+    const token = urlParams.get('access_token');
+    const expiresIn = urlParams.get('expires_in');
 
-    if (accessTokenMatch && expiresInMatch) {
-        accessToken = accessTokenMatch[1];
-        const expiresIn = Number(expiresInMatch[1]);
-        window.setTimeout(() => accessToken = '', expiresIn * 1000);
-        window.history.pushState('Access Token', null, '/');
-        return accessToken;
-    } else {
-        // Try with show_dialog to force permissions screen
-        const accessUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public%20playlist-modify-private%20user-read-private&redirect_uri=${redirectUri}&show_dialog=true`;
-        console.log("Authorization URL:", accessUrl);
-        window.location = accessUrl;
+    if (token) {
+      accessToken = token;
+      // Clear the hash from URL
+      window.history.pushState({}, document.title, window.location.pathname);
+      // Set expiration
+      setTimeout(() => { accessToken = null; }, expiresIn * 1000);
+      return accessToken;
     }
-},
 
-search(term) {
-    const accessToken = Spotify.getAccessToken();
+    // If no token, redirect to Spotify
+    const scopes = 'user-read-private playlist-modify-public playlist-modify-private';
+    window.location.href = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=${encodeURIComponent(scopes)}&redirect_uri=${encodeURIComponent(redirectUri)}&show_dialog=true`;
+  },
+
+  search(term) {
+    const token = Spotify.getAccessToken();
+    
+    if (!token) {
+      return Promise.resolve([]); // Return empty if redirecting
+    }
 
     return fetch(`https://api.spotify.com/v1/search?type=track&q=${encodeURIComponent(term)}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        mode: 'cors'  // Add this line
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
     })
-    .then(response => {
-        console.log("Response status:", response.status);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
+    .then(response => response.json())
+    .then(data => {
+      if (!data.tracks) return [];
+      return data.tracks.items.map(track => ({
+        id: track.id,
+        name: track.name,
+        artist: track.artists[0].name,
+        album: track.album.name,
+        uri: track.uri
+      }));
     })
-    .then(jsonResponse => {
-        console.log("Search results:", jsonResponse);
-        if (!jsonResponse.tracks) {
-            return [];
-        }
-        return jsonResponse.tracks.items.map(track => ({
-            id: track.id,
-            name: track.name,
-            artist: track.artists[0].name,
-            album: track.album.name,
-            uri: track.uri
-        }));
+    .catch(error => {
+      console.error('Search error:', error);
+      return [];
     });
   }
-}
+};
 
 export default Spotify;
