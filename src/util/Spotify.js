@@ -2,13 +2,15 @@ const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
 const redirectUri = 'https://scottodev.github.io/jammming/';
 
 let accessToken;
-let codeVerifier;
 
 // Generate code verifier and challenge for PKCE
 function generateCodeChallenge() {
   const array = new Uint32Array(56/2);
   window.crypto.getRandomValues(array);
-  codeVerifier = Array.from(array, dec => ('0' + dec.toString(16)).substr(-2)).join('');
+  const codeVerifier = Array.from(array, dec => ('0' + dec.toString(16)).substr(-2)).join('');
+  
+  // Store in localStorage so it survives page reload
+  localStorage.setItem('code_verifier', codeVerifier);
   
   const encoder = new TextEncoder();
   const data = encoder.encode(codeVerifier);
@@ -30,11 +32,12 @@ const Spotify = {
     // Check if we have an authorization code in URL
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
+    const storedCodeVerifier = localStorage.getItem('code_verifier');
 
-    if (code && codeVerifier) {
+    if (code && storedCodeVerifier) {
       console.log("=== TOKEN EXCHANGE DEBUG ===");
       console.log("Authorization code:", code);
-      console.log("Code verifier exists:", !!codeVerifier);
+      console.log("Code verifier exists:", !!storedCodeVerifier);
       
       // Exchange code for token
       const response = await fetch('https://accounts.spotify.com/api/token', {
@@ -47,7 +50,7 @@ const Spotify = {
           grant_type: 'authorization_code',
           code: code,
           redirect_uri: redirectUri,
-          code_verifier: codeVerifier,
+          code_verifier: storedCodeVerifier,
         }),
       });
 
@@ -58,7 +61,8 @@ const Spotify = {
       if (data.access_token) {
         accessToken = data.access_token;
         console.log("✅ Token saved successfully!");
-        // Clean URL
+        // Clean up
+        localStorage.removeItem('code_verifier');
         window.history.replaceState({}, document.title, window.location.pathname);
         // Set expiration
         setTimeout(() => { accessToken = null; }, data.expires_in * 1000);
