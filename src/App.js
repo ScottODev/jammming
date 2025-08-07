@@ -1,5 +1,5 @@
 //import logo from './logo.svg'; <- Not sure if I will use this yet so commented out.
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
@@ -13,6 +13,21 @@ function App() {
   const [playlistTracks, setPlaylistTracks] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
+
+useEffect(() => {
+  const checkConnection = async () => {
+    // Check if we have a code in URL or existing token
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    
+    if (code || localStorage.getItem('code_verifier')) {
+      console.log("Found auth code or verifier, attempting connection...");
+      await connectToSpotify();
+    }
+  };
+  
+  checkConnection();
+}, []);
 
 // Adding song to playlist feature 
   const addTrack = (track) => {
@@ -69,12 +84,17 @@ function App() {
       });
   };
 
-  // Spotify connect - MOVED OUTSIDE of search function
-  const connectToSpotify = () => {
-    Spotify.getAccessToken().then(() => {
+const connectToSpotify = async () => {
+  try {
+    const token = await Spotify.getAccessToken();
+    if (token) {
+      console.log("✅ Successfully connected to Spotify!");
       setIsConnected(true);
-    });
-  };
+    }
+  } catch (error) {
+    console.error("❌ Failed to connect to Spotify:", error);
+  }
+};
   
   return (
     <div className="App">
