@@ -54,29 +54,27 @@ function App() {
   };
 
   // Search function to fetch tracks from Spotify
+  const search = (term) => {
+    console.log("=== SEARCH DEBUG START ===");
+    console.log("Search term:", term);
+    
+    Spotify.search(term)
+      .then(searchResults => {
+        console.log("SUCCESS:", searchResults);
+        console.log("Number of results:", searchResults.length);
+        setSearchResults(searchResults);
+      })
+      .catch(error => {
+        console.error("Search failed:", error);
+      });
+  };
 
-const search = (term) => {
-  console.log("=== SEARCH DEBUG START ===");
-  console.log("Search term:", term);
-  
-  Spotify.search(term)
-    .then(searchResults => {
-      console.log("SUCCESS:", searchResults);
-      console.log("Number of results:", searchResults.length);
-      setSearchResults(searchResults);
-    })
-    .catch(error => {
-      console.error("Search failed:", error);
+  // Spotify connect - MOVED OUTSIDE of search function
+  const connectToSpotify = () => {
+    Spotify.getAccessToken().then(() => {
+      setIsConnected(true);
     });
-
-    // Spotify connect
-    const connectToSpotify = () => {
-      Spotify.getAccessToken().then(() => {
-        setIsConnected(true);
-  });
-};
-
-};
+  };
   
   return (
     <div className="App">
