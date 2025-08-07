@@ -85,7 +85,7 @@
 /* Welcome Section - Left Sidebar When Connected */
 .welcome-section.sidebar {
   max-width: none;
-  min-height: 600px;
+  height: 600px;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -95,6 +95,8 @@
   justify-content: flex-start;
   align-items: flex-start;
   padding: 25px;
+  display: flex;
+  flex-direction: column;
 }
 
 .welcome-title {
@@ -444,7 +446,41 @@
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Responsive Design */
+/* Developer Footer */
+.developer-footer {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 25px;
+  padding: 8px 20px;
+  font-size: 0.85rem;
+  color: #b3b3b3;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.developer-footer:hover {
+  background: rgba(29, 185, 84, 0.1);
+  border-color: rgba(29, 185, 84, 0.3);
+  color: #1db954;
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+}
+
+.developer-footer .dev-name {
+  background: linear-gradient(45deg, #1db954, #1ed760);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+}
 @media (max-width: 1200px) {
   .App-content {
     grid-template-columns: 300px 1fr 300px;
@@ -485,5 +521,15 @@
   
   .card-content {
     max-height: 400px;
+  }
+  
+  .developer-footer {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin: 20px auto 0 auto;
+    display: block;
+    width: fit-content;
   }
 }

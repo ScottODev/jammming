@@ -118,65 +118,70 @@ function App() {
 
       {/* Main Content */}
       {!isConnected ? (
-  <div className="welcome-section">
-    <h2 className="welcome-title">Hey</h2>
-    <h2 className="welcome-name">music lover</h2>
-    <p className="welcome-description">
-      Browse Spotify by title, artist or both. Then join your favorites 
-      into a newly created list that you can add to your account.
-    </p>
-    <button onClick={connectToSpotify} className="connect-btn">
-      Connect to Spotify
-    </button>
-  </div>
-) : (
-  <div className="App-content">
-    {/* Left sidebar with user info and search */}
-    <div className="welcome-section sidebar">
-      <h2 className="welcome-title">Hey</h2>
-      <h2 className="welcome-name">
-        {userInfo?.name || 'music lover'}
-      </h2>
-      <p className="welcome-description">
-        Browse Spotify by title, artist or both. Then join your favorites 
-        into a newly created list that you can add to your account.
-      </p>
-      
-      <div className="search-section">
-        <SearchBar onSearch={search}/>
-      </div>
-    </div>
+        <div className="welcome-section">
+          <h2 className="welcome-title">Hey</h2>
+          <h2 className="welcome-name">music lover</h2>
+          <p className="welcome-description">
+            Browse Spotify by title, artist or both. Then join your favorites 
+            into a newly created list that you can add to your account.
+          </p>
+          <button onClick={connectToSpotify} className="connect-btn">
+            Connect to Spotify
+          </button>
+        </div>
+      ) : (
+        <div className="App-content">
+          {/* Left sidebar with user info and search */}
+          <div className="welcome-section sidebar">
+            <h2 className="welcome-title">Hey</h2>
+            <h2 className="welcome-name">
+              {userInfo?.name || 'music lover'}
+            </h2>
+            <p className="welcome-description">
+              Browse Spotify by title, artist or both. Then join your favorites 
+              into a newly created list that you can add to your account.
+            </p>
+            
+            <div className="search-section">
+              <SearchBar onSearch={search}/>
+            </div>
+          </div>
 
-    {/* Center - Search Results */}
-    <div className="results-card">
-      <div className="card-header">
-        <h2 className="card-title">Results</h2>
-      </div>
-      <div className="card-content">
-        <SearchResults 
-          tracks={searchResults} 
-          onAdd={addTrack}
-        />
-      </div>
-    </div>
+          {/* Center - Search Results */}
+          <div className="results-card">
+            <div className="card-header">
+              <h2 className="card-title">Results</h2>
+            </div>
+            <div className="card-content">
+              <SearchResults 
+                tracks={searchResults} 
+                onAdd={addTrack}
+              />
+            </div>
+          </div>
 
-    {/* Right - Playlist */}
-    <div className="playlist-card">
-      <div className="card-header">
-        <h2 className="card-title">Your List</h2>
+          {/* Right - Playlist */}
+          <div className="playlist-card">
+            <div className="card-header">
+              <h2 className="card-title">Your List</h2>
+            </div>
+            <div className="card-content">
+              <Playlist 
+                playlistName={playlistName}
+                playlistTracks={playlistTracks}
+                onRemove={removeTrack}
+                onNameChange={updatePlaylistName}
+                onSave={savePlaylist}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Developer Footer */}
+      <div className="developer-footer">
+        Developed by <span className="dev-name">ScottODev</span>
       </div>
-      <div className="card-content">
-        <Playlist 
-          playlistName={playlistName}
-          playlistTracks={playlistTracks}
-          onRemove={removeTrack}
-          onNameChange={updatePlaylistName}
-          onSave={savePlaylist}
-        />
-      </div>
-    </div>
-  </div>
-)}
     </div>
   );
 }
