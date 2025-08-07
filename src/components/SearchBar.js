@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 function SearchBar({ onSearch }) {
-
   const [term, setTerm] = useState('');
 
   const search = () => {
@@ -13,13 +12,16 @@ function SearchBar({ onSearch }) {
   };
 
   return (
-    <div>
+    <div className="search-container">
       <input 
-      placeholder="Enter A Song, or Artist" 
-      value={term}
-      onChange={handleTermChange}
+        className="search-input"
+        placeholder="Enter A Song, or Artist" 
+        value={term}
+        onChange={handleTermChange}
       />
-      <button onClick={search}>Search</button>
+      <button className="search-button" onClick={search}>
+        <span className="search-icon">🔍</span>
+      </button>
     </div>
   );
 }
