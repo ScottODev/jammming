@@ -132,6 +132,26 @@ const Spotify = {
     }
   },
 
+  async getUserInfo() {
+    const token = await this.getAccessToken();
+    
+    const response = await fetch('https://api.spotify.com/v1/me', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return {
+        name: data.display_name,
+        id: data.id,
+        imageUrl: data.images[0]?.url || null
+      };
+    }
+    return null;
+  },
+
   async savePlaylist(playlistName, trackUris) {
     if (!playlistName || !trackUris.length) {
       console.log("No playlist name or tracks to save");
