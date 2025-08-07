@@ -12,7 +12,7 @@ function App() {
   const [playlistName, setPlaylistName] = useState('New Playlist');
   const [playlistTracks, setPlaylistTracks] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
-
+  const [isConnected, setIsConnected] = useState(false);
 
 // Adding song to playlist feature 
   const addTrack = (track) => {
@@ -68,6 +68,14 @@ const search = (term) => {
     .catch(error => {
       console.error("Search failed:", error);
     });
+
+    // Spotify connect
+    const connectToSpotify = () => {
+      Spotify.getAccessToken().then(() => {
+        setIsConnected(true);
+  });
+};
+
 };
   
   return (
