@@ -8,7 +8,7 @@
   margin: 0;
 }
 
-/* Header */
+/* Header Mobile Optimization */
 .app-header {
   display: flex;
   justify-content: space-between;
@@ -17,6 +17,8 @@
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  flex-wrap: wrap;
+  gap: 15px;
 }
 
 .app-title {
@@ -27,12 +29,14 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin: 0;
+  flex-shrink: 0;
 }
 
 .user-info {
   display: flex;
   align-items: center;
   gap: 15px;
+  flex-shrink: 0;
 }
 
 .user-avatar {
@@ -187,10 +191,10 @@
   font-size: 1rem;
 }
 
-/* Main Content - Even Three Column Layout */
+/* Main Content - Equal Width Columns */
 .App-content {
   display: grid;
-  grid-template-columns: 350px 1fr 350px;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 25px;
   padding: 20px;
   height: calc(100vh - 140px);
@@ -499,26 +503,63 @@
     height: auto;
   }
   
+  .app-header {
+    padding: 15px 20px;
+    text-align: center;
+  }
+  
+  .app-title {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+  
+  .user-info {
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .user-details {
+    text-align: center;
+  }
+  
+  .user-details h3 {
+    font-size: 1rem;
+  }
+  
+  .user-details p {
+    font-size: 0.8rem;
+  }
+  
+  .logout-btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+  
   .welcome-section {
     padding: 20px;
+    min-height: calc(100vh - 180px);
   }
   
   .welcome-section.sidebar {
     margin-bottom: 20px;
+    height: auto;
+    min-height: 400px;
   }
   
   .welcome-title,
   .welcome-name {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
   
-  .app-header {
-    padding: 15px 20px;
+  .search-input {
+    padding: 10px 40px 10px 15px;
+    font-size: 0.9rem;
   }
   
-  .user-info {
-    flex-direction: column;
-    gap: 10px;
+  .search-button {
+    width: 30px;
+    height: 30px;
   }
   
   .card-content {
