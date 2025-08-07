@@ -112,6 +112,78 @@ const Spotify = {
       album: track.album.name,
       uri: track.uri
     }));
+  },
+
+  async getUserId() {
+    const token = await this.getAccessToken();
+    
+    const response = await fetch('https://api.spotify.com/v1/me', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data.id;
+    } else {
+      console.error("Failed to fetch user ID:", response.status);
+      return null;
+    }
+  },
+
+  async savePlaylist(playlistName, trackUris) {
+    if (!playlistName || !trackUris.length) {
+      console.log("No playlist name or tracks to save");
+      return;
+    }
+
+    console.log("=== SAVING PLAYLIST TO SPOTIFY ===");
+    console.log("Playlist name:", playlistName);
+    console.log("Track URIs:", trackUris);
+
+    try {
+      // Get user ID
+      const userId = await this.getUserId();
+      console.log("User ID:", userId);
+
+      // Create playlist
+      const createResponse = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${await this.getAccessToken()}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: playlistName,
+          description: 'Created with Jammming app',
+          public: false
+        })
+      });
+
+      const playlist = await createResponse.json();
+      console.log("Created playlist:", playlist);
+
+      // Add tracks to playlist
+      const addTracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}/tracks`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${await this.getAccessToken()}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          uris: trackUris
+        })
+      });
+
+      const addResult = await addTracksResponse.json();
+      console.log("Added tracks result:", addResult);
+      
+      return playlist;
+
+    } catch (error) {
+      console.error("Error saving playlist:", error);
+    }
   }
 };
 

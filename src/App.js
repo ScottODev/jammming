@@ -51,22 +51,33 @@ useEffect(() => {
     setPlaylistName(name);
   }
 
-  const savePlaylist = () => {
-    console.log("Saving playlist:", playlistName);
+const savePlaylist = async () => {
+  console.log("Saving playlist:", playlistName);
 
-   // Extract URIs from playlist tracks
-   const trackUris = playlistTracks.map(track => track.uri);
-    console.log("Track URIs to save:", trackUris);
+  // Extract URIs from playlist tracks
+  const trackUris = playlistTracks.map(track => track.uri);
+  console.log("Track URIs to save:", trackUris);
 
-   // I will call the Spotify API here.
-   console.log(`Saving playlist "${playlistName}" with ${trackUris.length} tracks`);
-
-   // Reset playlist after saving
-   setPlaylistName('New Playlist');
-   setPlaylistTracks([]);
-
-   console.log("Playlist reset complete.");
-  };
+  try {
+    // Call Spotify API to save playlist
+    const result = await Spotify.savePlaylist(playlistName, trackUris);
+    
+    if (result) {
+      console.log("✅ Playlist saved to Spotify successfully!");
+      alert(`Playlist "${playlistName}" saved to your Spotify account!`);
+      
+      // Reset playlist after successful save
+      setPlaylistName('New Playlist');
+      setPlaylistTracks([]);
+    } else {
+      console.error("❌ Failed to save playlist");
+      alert("Failed to save playlist. Please try again.");
+    }
+  } catch (error) {
+    console.error("Error saving playlist:", error);
+    alert("Error saving playlist. Please try again.");
+  }
+};
 
   // Search function to fetch tracks from Spotify
   const search = (term) => {
